@@ -12,6 +12,8 @@
 (function() {
   'use strict';
 
+  var $ = window.jQuery; // Avoid noisy warnings in Tampermonkey's editor
+
   // The values are unused, could be helpful for debugging
   const drmStatus = {
     NO: "does not have DRM",
@@ -19,15 +21,11 @@
     UNKNOWN: "DRM status unknown"
   }
 
-  // log('script started');
-
   // Get the anchor tag for every book on this search results page.
   // This URL drills down into the book details.
   var books = $('p.title.product-field a');
 
   books.each((_i, e) => visitBook(e));
-
-  log('script ended');
 
   function visitBook(bookElem) {
     // Color the book gray before the (possibly lenghty) check
