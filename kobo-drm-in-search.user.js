@@ -12,56 +12,29 @@
 (function() {
   'use strict';
 
-  console.log('dino: script running');
+  // log('script running');
+
+  // Get the anchor tag for every book on this search results page.
+  // This URL drills down into the book details.
   var books = $('p.title.product-field a');
 
-  books.each(function(i, e) {
-    var detailUrl = $(e).attr('href');
-    console.log("dino: " + i + "  " + detailUrl);
-    // $(e).css("color", "red");
-    //console.log('dino: ' + doSomething());
-    hasDRM(detailUrl);
-  });
-  console.log('dino: after loop');
+  books.each((_i, e) => visitBook(e));
 
-  function hasDRM(url) {
-    console.log('dino: ' + url);
-    var pageContents = null;
-    $.get(url, function(data) {
-      console.log('dino: in the callback');
-      pageContents = data;
+  function visitBook(bookElem) {
+    // Retrieve the page contents
+    var detailUrl = $(bookElem).attr('href');
+    $.get(detailUrl, function(pageContents) {
+      // Search it for indications it has DRM
+      if (! /DRM-Free/.test(pageContents)) {
+        $(bookElem)
+          .css("color", "red")
+          .css("text-decoration", "line-through");
+        $(bookElem).parent().append("<span> has DRM!</span>");
+      }
     });
-    console.log('dino: ' + pageContents);
-    var metadataLines = $(pageContents).$('div.bookitem-secondary-metadata ul li').text;
-    metadataLines.each(function(i, e) {
-      console.log('dino: ' + i + "  " + e);
-    });
-    return false;  // FIXME
   }
 
-//  function hasDRM(url) {
-//    console.log('dino: ' + url);
-//    var pageContents = $.get(url);
-//    var metadataLines = $(pageContents).$('div.bookitem-secondary-metadata ul li').text;
-//    metadataLines.each(function(i, e) {
-//      console.log('dino: ' + i + "  " + e);
-//    });
-//    return false;  // FIXME
-//  }
+  // Convenience function. Shorter to call and can be filtered in the console easily.
+  function log(msg) { console.log('debug: ' + msg); }
 
-  // var hrefs = new Array();
-  // var elements = $('.headline > a');
-  // elements.each(function() {
-  //     hrefs.push($(this).addr('href'));
-  // });
-
-  // $('body').append('<input type="button" value="Open Links" id="CP">')
-  // $("#CP").css("position", "fixed").css("top", 0).css("left", 0);
-  // $('#CP').click(function() {
-  //     $.each(hrefs, function (index, value) {
-  //         setTimeout(function(){
-  //             window.open(value, '_blank');
-  //         },1000);
-  //     });
-  // });
 })();
