@@ -26,13 +26,7 @@ A real solution for this would be for Kobo to add filtering for DRM status to
 their search. In lieu of that, we can mark up the search results pages with the
 DRM status of books. This user script does that for search results at Kobo.
 
-## Installing
-
-Use the URLs below with your favorite user scripts manager
-
-    script                      Github                    Greasy Fork
-    ---------------------------------------------------------------------------------
-    kobo-drm-in-search.user.js  TBD                       TBD
+Install from Greasy Fork: <https://greasyfork.org/en/scripts/421355-kobo-drm-in-search-results>
 
 ## Contact
 
