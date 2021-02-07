@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kobo DRM in search results
 // @namespace    http://ui3.info/d/
-// @version      1.0
+// @version      1.1
 // @description  Mark up Kobo book search results with DRM status
 // @author       Dino Morelli <dino@ui3.info>
 // @match        https://www.kobo.com/us/en/search?query=*
