@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kobo DRM in search results
 // @namespace    http://ui3.info/d/
-// @version      1.1
+// @version      1.2
 // @description  Mark up Kobo book search results with DRM status
 // @author       Dino Morelli <dino@ui3.info>
 // @source       https://github.com/dino-/tampermonkey
