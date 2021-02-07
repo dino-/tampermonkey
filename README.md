@@ -27,6 +27,7 @@ their search. In lieu of that, we can mark up the search results pages with the
 DRM status of books. This user script does that for search results at Kobo.
 
 Install from Greasy Fork: <https://greasyfork.org/en/scripts/421355-kobo-drm-in-search-results>
+Install from Github, go here and push the `Raw` button: <https://github.com/dino-/tampermonkey/blob/main/Kobo%20DRM%20in%20search%20results.user.js>
 
 ## Contact
 
