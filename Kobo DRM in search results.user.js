@@ -16,7 +16,7 @@
   var $ = window.jQuery; // Avoid noisy warnings in Tampermonkey's editor
 
   // The values are unused, could be helpful for debugging
-  const drmStatus = {
+  const DrmStatus = {
     NO: "does not have DRM",
     YES: "has DRM",
     UNKNOWN: "DRM status unknown"
@@ -26,39 +26,40 @@
   // This URL drills down into the book details.
   var books = $('p.title.product-field a');
 
-  books.each((_i, e) => visitBook(e));
+  // Evaluate all the books in parallel
+  Promise.all(
+    // This produces a list of Promises from the $.get async calls
+    books.each((_i, bookElem) => {
+      // Color the book gray before the (possibly lenghty) checks
+      $(bookElem).css("color", "gray");
+      $.get($(bookElem).attr('href')).then(styleBook(bookElem))
+    })
+  );
 
-  function visitBook(bookElem) {
-    // Color the book gray before the (possibly lenghty) check
-    $(bookElem).css("color", "gray");
-
-    // Retrieve the page contents
-    var detailUrl = $(bookElem).attr('href');
-    $.get(detailUrl, function(pageContents) {
-      switch (checkForDRM(pageContents)) {
-        case drmStatus.NO:
-          $(bookElem).css("color", "black");
-          break;
-        case drmStatus.YES:
-          $(bookElem)
-            .css("color", "red")
-            .css("text-decoration", "line-through");
-          $(bookElem).parent().append("<span> (has DRM!)</span>");
-          break;
-        case drmStatus.UNKNOWN:
-        default:
-          $(bookElem).css("color", "orange")
-          $(bookElem).parent().append("<span> (DRM status unknown)</span>");
-      }
-    });
-  }
+  function styleBook(bookElem) { return function(pageContents) {
+    switch (checkForDRM(pageContents)) {
+      case DrmStatus.NO:
+        $(bookElem).css("color", "black");
+        break;
+      case DrmStatus.YES:
+        $(bookElem)
+          .css("color", "red")
+          .css("text-decoration", "line-through");
+        $(bookElem).parent().append("<span> (has DRM!)</span>");
+        break;
+      case DrmStatus.UNKNOWN:
+      default:
+        $(bookElem).css("color", "orange")
+        $(bookElem).parent().append("<span> (DRM status unknown)</span>");
+    }
+  }}
 
   // Returns what we can determine about the DRM. Yes, no or unknown using the above "enum"
   function checkForDRM(pageContents) {
-    if (/DRM-Free/.test(pageContents)) { return drmStatus.NO; }
-    else if (/sold without Digital Rights Management Software/.test(pageContents)) { return drmStatus.NO; }
-    else if (/Adobe DRM/.test(pageContents)) { return drmStatus.YES; }
-    else { return drmStatus.UNKNOWN; }
+    if (/DRM-Free/.test(pageContents)) { return DrmStatus.NO; }
+    else if (/sold without Digital Rights Management Software/.test(pageContents)) { return DrmStatus.NO; }
+    else if (/Adobe DRM/.test(pageContents)) { return DrmStatus.YES; }
+    else { return DrmStatus.UNKNOWN; }
   }
 
   // Convenience function. Shorter to call and can be filtered in the console easily.
