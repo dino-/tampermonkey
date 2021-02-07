@@ -49,7 +49,7 @@
         break;
       case DrmStatus.UNKNOWN:
       default:
-        $(bookElem).css("color", "orange")
+        $(bookElem).css("color", "orange");
         $(bookElem).parent().append("<span> (DRM status unknown)</span>");
     }
   }}
