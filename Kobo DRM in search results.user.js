@@ -4,6 +4,7 @@
 // @version      1.1
 // @description  Mark up Kobo book search results with DRM status
 // @author       Dino Morelli <dino@ui3.info>
+// @source       https://github.com/dino-/tampermonkey
 // @match        https://www.kobo.com/us/en/search?query=*
 // @grant        none
 // @require      https://code.jquery.com/jquery-3.5.1.min.js
