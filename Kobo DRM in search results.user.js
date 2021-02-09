@@ -13,7 +13,7 @@
 (function() {
   'use strict';
 
-  var $ = window.jQuery; // Avoid noisy warnings in Tampermonkey's editor
+  const $ = window.jQuery; // Avoid noisy warnings in Tampermonkey's editor
 
   // The values are unused, could be helpful for debugging
   const DrmStatus = {
@@ -24,7 +24,7 @@
 
   // Get the anchor tag for every book on this search results page.
   // This URL drills down into the book details.
-  var books = $('p.title.product-field a');
+  const books = $('p.title.product-field a');
 
   // Evaluate all the books in parallel
   Promise.all(
