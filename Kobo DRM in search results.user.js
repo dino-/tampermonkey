@@ -32,7 +32,7 @@
     books.each((_i, bookElem) => {
       // Color the book gray before the (possibly lenghty) checks
       $(bookElem).css("color", "gray");
-      $.get($(bookElem).attr("href")).then(styleBook(bookElem))
+      return $.get($(bookElem).attr("href")).then(styleBook(bookElem));
     })
   );
 
