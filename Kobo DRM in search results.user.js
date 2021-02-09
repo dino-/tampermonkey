@@ -24,7 +24,7 @@
 
   // Get the anchor tag for every book on this search results page.
   // This URL drills down into the book details.
-  const books = $('p.title.product-field a');
+  const books = $("p.title.product-field a");
 
   // Evaluate all the books in parallel
   Promise.all(
@@ -32,7 +32,7 @@
     books.each((_i, bookElem) => {
       // Color the book gray before the (possibly lenghty) checks
       $(bookElem).css("color", "gray");
-      $.get($(bookElem).attr('href')).then(styleBook(bookElem))
+      $.get($(bookElem).attr("href")).then(styleBook(bookElem))
     })
   );
 
@@ -63,6 +63,6 @@
   }
 
   // Convenience function. Shorter to call and can be filtered in the console easily.
-  function log(msg) { console.log('debug: ' + msg); }
+  function log(msg) { console.log("debug: " + msg); }
 
 })();
