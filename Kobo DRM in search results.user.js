@@ -15,25 +15,22 @@
 
   const $ = window.jQuery; // Avoid noisy warnings in Tampermonkey's editor
 
-  // The values are unused, could be helpful for debugging
+  // The values are for reducing a list of these to the "worst" (highest) one using Math.max()
   const DrmStatus = {
-    NO: "does not have DRM",
-    YES: "has DRM",
-    UNKNOWN: "DRM status unknown"
+    UNKNOWN: 0,
+    NO: 1,
+    YES: 2
   }
 
   // Get the anchor tag for every book on this search results page.
   // This URL drills down into the book details.
   const books = $("p.title.product-field a");
 
-  // Evaluate all the books in parallel
-  Promise.all(
-    // This produces a list of Promises from the $.get async calls
-    books.each((_i, bookElem) => {
-      // Color the book gray before the (possibly lenghty) checks
-      $(bookElem).css("color", "gray");
-      return $.get($(bookElem).attr("href")).then(styleBook(bookElem));
-    })
+  // Color the book gray before the (possibly lenghty) checks below
+  books.each((_i, bookElem) => $(bookElem).css("color", "gray"));
+
+  Promise.all(books.each((_i, bookElem) =>
+    $.get($(bookElem).attr("href")).then(styleBook(bookElem)))
   );
 
   function styleBook(bookElem) { return function(pageContents) {
@@ -56,10 +53,15 @@
 
   // Returns what we can determine about the DRM. Yes, no or unknown using the above "enum"
   function checkForDRM(pageContents) {
-    if (/DRM-Free/.test(pageContents)) { return DrmStatus.NO; }
-    else if (/sold without Digital Rights Management Software/.test(pageContents)) { return DrmStatus.NO; }
-    else if (/Adobe DRM/.test(pageContents)) { return DrmStatus.YES; }
-    else { return DrmStatus.UNKNOWN; }
+    return Math.max(...
+      [ (/Adobe DRM/.test(pageContents)) ? DrmStatus.YES : DrmStatus.UNKNOWN
+      , (/>Audio</.test(pageContents) && />Format</.test(pageContents)) ? DrmStatus.YES : DrmStatus.UNKNOWN
+      , (/DRM-Free/.test(pageContents)) ? DrmStatus.NO : DrmStatus.UNKNOWN
+      , (/sold without Digital Rights Management Software/.test(pageContents)) ? DrmStatus.NO : DrmStatus.UNKNOWN
+      , (/This book is DRM-free/.test(pageContents)) ? DrmStatus.NO : DrmStatus.UNKNOWN
+      , DrmStatus.UNKNOWN
+      ]
+    );
   }
 
   // Convenience function. Shorter to call and can be filtered in the console easily.
