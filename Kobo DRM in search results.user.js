@@ -24,7 +24,7 @@
 
   // Get the anchor tag for every book on this search results page.
   // This URL drills down into the book details.
-  const books = $(".title.product-field a");
+  const books = $(".book-card-desktop a[data-testid='title']");
 
   // Color the book gray before the (possibly lenghty) checks below
   books.each((_i, bookElem) => $(bookElem).css("color", "gray"));
